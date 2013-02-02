@@ -30,8 +30,6 @@ CChildView::CChildView()
 	m_Brush[ 1].CreateSolidBrush( RGB(0,255,0) );
 	m_Brush[ 2].CreateSolidBrush( RGB(0,0,255) );
 	m_Brush[ 3].CreateSolidBrush( RGB(255,0,0) );
-
-
 }
 
 CChildView::~CChildView()

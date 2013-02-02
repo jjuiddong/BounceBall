@@ -34,7 +34,7 @@ public:
 protected:
 	Vector2 m_Pos;
 	Vector2 m_Velocity;
-	int m_Radian;
+	int m_Radius;
 	Color m_Color;
 
 public:
@@ -42,8 +42,8 @@ public:
 	Color GetColor() { return m_Color; }
 	CRect GetRect() 
 	{ 
-		return CRect((int)m_Pos.x-m_Radian, (int)m_Pos.y-m_Radian, 
-			(int)m_Pos.x+m_Radian, (int)m_Pos.y+m_Radian);
+		return CRect((int)m_Pos.x-m_Radius, (int)m_Pos.y-m_Radius, 
+			(int)m_Pos.x+m_Radius, (int)m_Pos.y+m_Radius);
 	};
 
 };

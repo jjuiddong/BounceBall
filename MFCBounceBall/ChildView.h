@@ -22,7 +22,7 @@ public:
 	CChildView();
 
 public:
-	enum { MAX_BALL_COUNT=3 };
+	enum { MAX_BALL_COUNT=10 };
 	CBall *m_Balls[ MAX_BALL_COUNT];
 
 	CBrush m_Brush[ 4];
