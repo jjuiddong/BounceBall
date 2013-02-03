@@ -13,6 +13,45 @@ struct Vector2
 	float x, y;
 	Vector2() {}
 	Vector2(float _x, float _y) : x(_x), y(_y) {}
+	Vector2& operator=(const Vector2 &rhs)
+	{
+		if (this != &rhs)
+		{
+			x = rhs.x;
+			y = rhs.y;
+		}
+		return *this;
+	}
+	Vector2 operator-(const Vector2 &rhs)
+	{
+		Vector2 v;
+		v.x = x - rhs.x;
+		v.y = y - rhs.y;
+		return v;
+	}
+	Vector2 operator*(const Vector2 &rhs)
+	{
+		Vector2 v;
+		v.x = x * rhs.x;
+		v.y = y * rhs.y;
+		return v;
+	}
+	template<class T>
+	Vector2 operator*(const T &f)
+	{
+		Vector2 v;
+		v.x = x * f;
+		v.y = y * f;
+		return v;
+	}
+	float length() { return (float)sqrt(x*x + y*y); }
+	void normalize()
+	{
+		const float L = length();
+		x /= L;
+		y /= L;
+	}
+
 };
 
 DECLARE_TYPE_NAME(CBall)
@@ -38,7 +77,8 @@ protected:
 	Color m_Color;
 
 public:
-	void Move(const CRect &windowRect, int elapse_time );
+	void Move(const CRect &windowRect, const std::vector<CBall*> &balls, 
+		int elapse_time );
 	Color GetColor() { return m_Color; }
 	CRect GetRect() 
 	{ 

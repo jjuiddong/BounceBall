@@ -1,16 +1,3 @@
-// 이 MFC 샘플 소스 코드는 MFC Microsoft Office Fluent 사용자 인터페이스("Fluent UI")를 
-// 사용하는 방법을 보여 주며, MFC C++ 라이브러리 소프트웨어에 포함된 
-// Microsoft Foundation Classes Reference 및 관련 전자 문서에 대해 
-// 추가적으로 제공되는 내용입니다.  
-// Fluent UI를 복사, 사용 또는 배포하는 데 대한 사용 약관은 별도로 제공됩니다.  
-// Fluent UI 라이선싱 프로그램에 대한 자세한 내용은 
-// http://msdn.microsoft.com/officeui를 참조하십시오.
-//
-// Copyright (C) Microsoft Corporation
-// All rights reserved.
-
-// ChildView.cpp : CChildView 클래스의 구현
-//
 
 #include "stdafx.h"
 #include "MFCBounceBall.h"
@@ -23,13 +10,14 @@
 
 
 // CChildView
-
-CChildView::CChildView()
+CChildView::CChildView() :
+	m_Balls(MAX_BALL_COUNT)
 {
 	m_Brush[ 0].CreateSolidBrush( RGB(255,255,0) );
 	m_Brush[ 1].CreateSolidBrush( RGB(0,255,0) );
 	m_Brush[ 2].CreateSolidBrush( RGB(0,0,255) );
 	m_Brush[ 3].CreateSolidBrush( RGB(255,0,0) );
+	m_Brush[ 4].CreateSolidBrush( RGB(255,255,255) );
 }
 
 CChildView::~CChildView()
@@ -40,6 +28,7 @@ CChildView::~CChildView()
 
 BEGIN_MESSAGE_MAP(CChildView, CWnd)
 	ON_WM_PAINT()
+	ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
 
 
@@ -59,9 +48,7 @@ BOOL CChildView::PreCreateWindow(CREATESTRUCT& cs)
 	sharedmemory::Init( "BounceBall", sharedmemory::SHARED_SERVER, 1024 );
 
 	for (int i=0; i < MAX_BALL_COUNT; ++i)
-	{
 		m_Balls[ i] = new CBall( CPoint((i+1)*30, (i+1)*30), 10 );
-	}
 
 	return TRUE;
 }
@@ -70,23 +57,42 @@ void CChildView::OnPaint()
 {
 	CPaintDC dc(this);
 
+	CRect cr;
+	GetClientRect(cr);
+
+	CDC memDC;
+	CBitmap myBitmap;
+	CBitmap *pOldBitmap;
+
+	memDC.CreateCompatibleDC( &dc );
+	myBitmap.CreateCompatibleBitmap( &dc, cr.Width(), cr.Height() );
+	pOldBitmap = memDC.SelectObject( &myBitmap );
+	memDC.PatBlt(0,0, cr.Width(), cr.Height(), WHITENESS );
+
 	for (int i=0; i < MAX_BALL_COUNT; ++i)
 	{
-		dc.SelectObject( &m_Brush[ m_Balls[ i]->GetColor()] );
-		dc.Ellipse(  m_Balls[ i]->GetRect() );		
+		memDC.SelectObject( &m_Brush[ m_Balls[ i]->GetColor()] );
+		memDC.Ellipse(  m_Balls[ i]->GetRect() );		
 	}
 
+	dc.BitBlt(0, 0, cr.Width(), cr.Height(), &memDC, 0, 0, SRCCOPY);
+
+	dc.SelectObject( pOldBitmap );
+	myBitmap.DeleteObject();
+	ReleaseDC( &memDC );
+	DeleteDC( memDC );
 }
 
 void	CChildView::MainLoop(int elapse_time)
 {
 	CRect cr;
 	GetClientRect(cr);
-
-	// move
 	for (int i=0; i < MAX_BALL_COUNT; ++i)
-	{
-		m_Balls[ i]->Move( cr, elapse_time );
-	}
+		m_Balls[ i]->Move( cr, m_Balls, elapse_time );
 	InvalidateRect(NULL);
+}
+
+BOOL CChildView::OnEraseBkgnd(CDC* pDC)
+{
+	return TRUE;
 }

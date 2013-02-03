@@ -17,7 +17,8 @@ CBall::CBall(POINT pos, int radian) :
 		(rand_rng() *0.2f - 0.2f) );
 }
 
-void CBall::Move(const CRect &windowRect, int elapse_time)
+void CBall::Move(const CRect &windowRect, const std::vector<CBall*> &balls,
+				 int elapse_time)
 {
 	float x = m_Velocity.x * elapse_time;
 	float y = m_Velocity.y * elapse_time;
@@ -36,4 +37,18 @@ void CBall::Move(const CRect &windowRect, int elapse_time)
 	if (m_Velocity.y > 0 &&  m_Pos.y + m_Radius  > windowRect.bottom)
 		m_Velocity.y = -m_Velocity.y;
 
+	// check collision 
+	for (u_int i=0; i < balls.size(); ++i)
+	{
+		if (this != balls[ i])
+		{
+			Vector2 dist = balls[ i]->m_Pos - m_Pos;
+			if ((m_Radius+balls[ i]->m_Radius) > dist.length())
+			{// collision
+				Vector2 dir = m_Pos - balls[ i]->m_Pos;
+				dir.normalize();
+				m_Velocity = dir * m_Velocity.length();
+			}
+		}
+	}
 }

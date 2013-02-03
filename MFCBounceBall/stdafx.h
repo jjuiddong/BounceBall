@@ -71,9 +71,10 @@
 
 
 #include <list>
+#include <vector>
+#include <algorithm>
 #include "Lib/SharedMemory.h"
 #include "Lib/SharedMemoryMng.h"
-
 
 
 #ifndef SAFE_DELETE

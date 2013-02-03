@@ -345,5 +345,9 @@
 		</File>
 	</Files>
 	<Globals>
+		<Global
+			Name="RESOURCE_FILE"
+			Value="MFCBounceBall.rc"
+		/>
 	</Globals>
 </VisualStudioProject>

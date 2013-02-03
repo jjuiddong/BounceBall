@@ -126,7 +126,9 @@ BOOL CMFCBounceBallApp::InitInstance()
 		{
 			Sleep(1);
 			const int curT = GetTickCount();
-			const int elapse =  curT - oldT;
+			int elapse =  curT - oldT;
+			if (elapse > 1000)
+				elapse = 0;
 			pFrame->GetChildView()->MainLoop(elapse);
 			oldT = curT;
 		}
