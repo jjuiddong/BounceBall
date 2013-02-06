@@ -8,7 +8,7 @@ public:
 	virtual ~CChildView();
 
 public:
-	enum { MAX_BALL_COUNT=10 };
+	enum { MAX_BALL_COUNT=20 };
 	std::vector<CBall*> m_Balls;
 
 	CBrush m_Brush[ 5];

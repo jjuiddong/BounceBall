@@ -45,7 +45,7 @@ BOOL CChildView::PreCreateWindow(CREATESTRUCT& cs)
 	cs.lpszClass = AfxRegisterWndClass(CS_HREDRAW|CS_VREDRAW|CS_DBLCLKS, 
 		::LoadCursor(NULL, IDC_ARROW), reinterpret_cast<HBRUSH>(COLOR_WINDOW+1), NULL);
 
-	sharedmemory::Init( "BounceBall", sharedmemory::SHARED_SERVER, 1024 );
+	sharedmemory::Init( "BounceBall", sharedmemory::SHARED_SERVER, 10240 );
 
 	for (int i=0; i < MAX_BALL_COUNT; ++i)
 		m_Balls[ i] = new CBall( CPoint((i+1)*30, (i+1)*30), 10 );
