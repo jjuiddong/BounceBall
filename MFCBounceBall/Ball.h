@@ -22,14 +22,21 @@ struct Vector2
 		}
 		return *this;
 	}
-	Vector2 operator-(const Vector2 &rhs)
+	Vector2 operator-(const Vector2 &rhs) const
 	{
 		Vector2 v;
 		v.x = x - rhs.x;
 		v.y = y - rhs.y;
 		return v;
 	}
-	Vector2 operator*(const Vector2 &rhs)
+	Vector2 operator+(const Vector2 &rhs) const
+	{
+		Vector2 v;
+		v.x = x + rhs.x;
+		v.y = y + rhs.y;
+		return v;
+	}
+	Vector2 operator*(const Vector2 &rhs) const
 	{
 		Vector2 v;
 		v.x = x * rhs.x;
@@ -37,7 +44,7 @@ struct Vector2
 		return v;
 	}
 	template<class T>
-	Vector2 operator*(const T &f)
+	Vector2 operator*(const T &f) const
 	{
 		Vector2 v;
 		v.x = x * f;
@@ -50,6 +57,11 @@ struct Vector2
 		const float L = length();
 		x /= L;
 		y /= L;
+	}
+	void interpol( const Vector2 &from, const Vector2 &to, float f )
+	{
+		*this = from*(1.f-f) + to*f;
+		normalize();
 	}
 
 };
@@ -85,6 +97,10 @@ public:
 		return CRect((int)m_Pos.x-m_Radius, (int)m_Pos.y-m_Radius, 
 			(int)m_Pos.x+m_Radius, (int)m_Pos.y+m_Radius);
 	};
+	float Power()
+	{
+		return (m_Velocity.length() * m_Velocity.length()) * m_Radius;
+	}
 
 };
 

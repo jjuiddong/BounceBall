@@ -13,8 +13,8 @@ CBall::CBall(POINT pos, int radian) :
 {
 	m_Pos = Vector2((float)pos.x, (float)pos.y);
 	m_Velocity = Vector2(
-		(rand_rng() *0.2f - 0.2f),
-		(rand_rng() *0.2f - 0.2f) );
+		(rand_rng()*0.4f - 0.2f),
+		(rand_rng()*0.4f - 0.2f) );
 }
 
 void CBall::Move(const CRect &windowRect, const std::vector<CBall*> &balls,
@@ -38,15 +38,19 @@ void CBall::Move(const CRect &windowRect, const std::vector<CBall*> &balls,
 		m_Velocity.y = -m_Velocity.y;
 
 	// check collision 
+	Vector2 curDir = m_Velocity;
+	curDir.normalize();
 	for (u_int i=0; i < balls.size(); ++i)
 	{
 		if (this != balls[ i])
 		{
 			Vector2 dist = balls[ i]->m_Pos - m_Pos;
-			if ((m_Radius+balls[ i]->m_Radius) > dist.length())
+			if ((m_Radius+balls[ i]->m_Radius) >= dist.length()-0.1f)
 			{// collision
 				Vector2 dir = m_Pos - balls[ i]->m_Pos;
 				dir.normalize();
+				// 위치보정 (충돌 위치)
+				m_Pos = dir * (m_Radius + balls[ i]->m_Radius) + balls[ i]->m_Pos;
 				m_Velocity = dir * m_Velocity.length();
 			}
 		}

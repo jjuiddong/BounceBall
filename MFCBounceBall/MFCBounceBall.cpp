@@ -124,7 +124,7 @@ BOOL CMFCBounceBallApp::InitInstance()
 
 		if (bDoingBackgroundProcessing)
 		{
-			Sleep(1);
+			Sleep(0);
 			const int curT = GetTickCount();
 			int elapse =  curT - oldT;
 			if (elapse > 1000)
