@@ -72,7 +72,7 @@ void CChildView::OnPaint()
 	for (int i=0; i < MAX_BALL_COUNT; ++i)
 	{
 		memDC.SelectObject( &m_Brush[ m_Balls[ i]->GetColor()] );
-		memDC.Ellipse(  m_Balls[ i]->GetRect() );		
+		memDC.Ellipse(  m_Balls[ i]->GetRect() );
 	}
 
 	dc.BitBlt(0, 0, cr.Width(), cr.Height(), &memDC, 0, 0, SRCCOPY);

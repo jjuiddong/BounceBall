@@ -10,6 +10,7 @@ float rand_rng() // 0.00 ~ 1.00f
 
 CBall::CBall(POINT pos, int radian) : 
 	m_Radius(radian)
+,	m_Color(YELLOW)
 {
 	m_Pos = Vector2((float)pos.x, (float)pos.y);
 	m_Velocity = Vector2(
